@@ -144,7 +144,7 @@ export const Bible: React.FC = () => {
         {/* Quick Actions */}
         <div className="grid grid-cols-3 gap-3">
           <Link to="/leitura-hoje">
-            <Card className="p-3 bible-gradient text-white hover:opacity-90 divine-transition">
+            <Card className="p-3 bg-primary text-white hover:opacity-90 divine-transition">
               <div className="text-center">
                 <Calendar size={20} className="mx-auto mb-2" />
                 <h3 className="font-medium text-sm">Leitura de Hoje</h3>
@@ -153,7 +153,7 @@ export const Bible: React.FC = () => {
           </Link>
           
           <Link to="/terco">
-            <Card className="p-3 gold-gradient text-white hover:opacity-90 divine-transition">
+            <Card className="p-3 bg-secondary text-white hover:opacity-90 divine-transition">
               <div className="text-center">
                 <Clock size={20} className="mx-auto mb-2" />
                 <h3 className="font-medium text-sm">Terço</h3>
@@ -162,7 +162,7 @@ export const Bible: React.FC = () => {
           </Link>
           
           <Link to="/missa">
-            <Card className="p-3 bg-divine text-white hover:opacity-90 divine-transition">
+            <Card className="p-3 bg-primary text-white hover:opacity-90 divine-transition">
               <div className="text-center">
                 <BookOpen size={20} className="mx-auto mb-2" />
                 <h3 className="font-medium text-sm">Missa</h3>
@@ -172,7 +172,7 @@ export const Bible: React.FC = () => {
         </div>
 
         {/* Versículo do Dia */}
-        <Card className="p-4 bible-gradient text-white">
+        <Card className="p-4 bg-primary text-white">
           <h3 className="font-semibold mb-2">📖 Versículo do Dia</h3>
           <p className="text-sm opacity-90 mb-3 verse-text">
             {(() => {

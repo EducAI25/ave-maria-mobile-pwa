@@ -113,7 +113,7 @@ export const Terco: React.FC = () => {
         </Card>
 
         {/* Current Prayer */}
-        <Card className="p-6 bible-gradient text-white">
+        <Card className="p-6 bg-primary text-white">
           <div className="text-center space-y-4">
             <h3 className="text-lg font-semibold">
               {currentPrayerData.type}

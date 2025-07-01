@@ -154,7 +154,7 @@ export const Rosario: React.FC = () => {
       
       <div className="p-4 space-y-4">
         {/* Today's Mystery */}
-        <Card className="p-4 bible-gradient text-white">
+        <Card className="p-4 bg-primary text-white">
           <h3 className="font-semibold mb-2">🙏 Mistério de Hoje</h3>
           <Badge variant="secondary" className="mb-2">
             {mysteryTypes[todayMystery].name}

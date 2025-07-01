@@ -78,7 +78,7 @@ export const PWAInstallPrompt: React.FC = () => {
 
   return (
     <div className="fixed bottom-20 left-4 right-4 z-50">
-      <Card className="p-4 bible-gradient text-white divine-shadow">
+      <Card className="p-4 bg-primary text-white divine-shadow">
         <div className="flex items-start gap-3">
           <div className="flex-1">
             <h3 className="font-semibold mb-2">📱 Instalar App Ave Maria</h3>

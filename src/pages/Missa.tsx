@@ -74,7 +74,7 @@ export const Missa: React.FC = () => {
       
       <div className="p-4 space-y-4">
         {/* Today's Info */}
-        <Card className="p-4 bible-gradient text-white">
+        <Card className="p-4 bg-primary text-white">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold">🙏 Missa de Hoje</h3>
             <Badge variant="secondary" className="text-primary">

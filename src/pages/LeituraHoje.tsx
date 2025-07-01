@@ -152,7 +152,7 @@ export const LeituraHoje: React.FC = () => {
       
       <div className="p-4 space-y-4">
         {/* Today's Info */}
-        <Card className="p-4 bible-gradient text-white">
+        <Card className="p-4 bg-primary text-white">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold">📅 Liturgia de Hoje</h3>
             <Badge variant="secondary" className="text-primary">
@@ -168,7 +168,7 @@ export const LeituraHoje: React.FC = () => {
         </Card>
 
         {/* Saint of the Day */}
-        <Card className="p-4 gold-gradient text-white">
+        <Card className="p-4 bg-secondary text-white">
           <div className="text-center">
             <h3 className="font-semibold mb-1">👑 Santo do Dia</h3>
             <p className="text-lg font-medium">{TODAY_READING.saint}</p>

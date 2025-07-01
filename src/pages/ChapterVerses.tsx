@@ -67,7 +67,7 @@ export const ChapterVerses: React.FC = () => {
         </div>
 
         {/* Header do Capítulo */}
-        <Card className="p-4 bible-gradient text-white">
+        <Card className="p-4 bg-primary text-white">
           <div className="text-center">
             <h2 className="text-xl font-bold mb-1">{book.name}</h2>
             <p className="text-sm opacity-90">Capítulo {chapter.number}</p>
