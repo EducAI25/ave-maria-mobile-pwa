@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Calendar, Clock } from 'lucide-react';
+import { BIBLE_CONTENT, getDailyVerse } from '@/data/bibleContent';
 
 interface Book {
   id: string;
@@ -170,13 +171,21 @@ export const Bible: React.FC = () => {
           </Link>
         </div>
 
-        {/* Leitura do Dia */}
+        {/* Versículo do Dia */}
         <Card className="p-4 bible-gradient text-white">
           <h3 className="font-semibold mb-2">📖 Versículo do Dia</h3>
-          <p className="text-sm opacity-90 mb-3">
-            "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna."
+          <p className="text-sm opacity-90 mb-3 verse-text">
+            {(() => {
+              const dailyVerse = getDailyVerse();
+              return `"${dailyVerse.text}"`;
+            })()}
           </p>
-          <p className="text-xs font-medium">João 3:16</p>
+          <p className="text-xs font-medium">
+            {(() => {
+              const dailyVerse = getDailyVerse();
+              return `${dailyVerse.book} ${dailyVerse.chapter}:${dailyVerse.verse}`;
+            })()}
+          </p>
           <Link to="/leitura-hoje">
             <Button variant="secondary" size="sm" className="mt-3 bg-white/20 text-white border-white/30 hover:bg-white/30">
               Ver leitura completa
@@ -190,17 +199,22 @@ export const Bible: React.FC = () => {
             <h2 className="text-lg font-semibold text-primary mb-3">Antigo Testamento</h2>
             <div className="grid grid-cols-2 gap-3">
               {oldTestamentBooks.map((book) => (
-                <Card key={book.id} className="p-3 hover:shadow-md divine-transition cursor-pointer">
-                  <div className="flex items-center gap-2">
-                    <BookOpen size={16} className="text-primary" />
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-sm truncate">{book.name}</h3>
-                      <p className="text-xs text-muted-foreground">
-                        {book.chapters} capítulo{book.chapters !== 1 ? 's' : ''}
-                      </p>
+                <Link key={book.id} to={BIBLE_CONTENT[book.id] ? `/livro/${book.id}` : '#'}>
+                  <Card className={`p-3 hover:shadow-md divine-transition cursor-pointer ${!BIBLE_CONTENT[book.id] ? 'opacity-50' : ''}`}>
+                    <div className="flex items-center gap-2">
+                      <BookOpen size={16} className="text-primary" />
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-sm truncate">{book.name}</h3>
+                        <p className="text-xs text-muted-foreground">
+                          {BIBLE_CONTENT[book.id] 
+                            ? `${BIBLE_CONTENT[book.id].chapters.length} capítulo${BIBLE_CONTENT[book.id].chapters.length !== 1 ? 's' : ''}`
+                            : 'Em breve'
+                          }
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Card>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>
@@ -212,17 +226,22 @@ export const Bible: React.FC = () => {
             <h2 className="text-lg font-semibold text-primary mb-3">Novo Testamento</h2>
             <div className="grid grid-cols-2 gap-3">
               {newTestamentBooks.map((book) => (
-                <Card key={book.id} className="p-3 hover:shadow-md divine-transition cursor-pointer">
-                  <div className="flex items-center gap-2">
-                    <BookOpen size={16} className="text-primary" />
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-sm truncate">{book.name}</h3>
-                      <p className="text-xs text-muted-foreground">
-                        {book.chapters} capítulo{book.chapters !== 1 ? 's' : ''}
-                      </p>
+                <Link key={book.id} to={BIBLE_CONTENT[book.id] ? `/livro/${book.id}` : '#'}>
+                  <Card className={`p-3 hover:shadow-md divine-transition cursor-pointer ${!BIBLE_CONTENT[book.id] ? 'opacity-50' : ''}`}>
+                    <div className="flex items-center gap-2">
+                      <BookOpen size={16} className="text-primary" />
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-sm truncate">{book.name}</h3>
+                        <p className="text-xs text-muted-foreground">
+                          {BIBLE_CONTENT[book.id] 
+                            ? `${BIBLE_CONTENT[book.id].chapters.length} capítulo${BIBLE_CONTENT[book.id].chapters.length !== 1 ? 's' : ''}`
+                            : 'Em breve'
+                          }
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Card>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>

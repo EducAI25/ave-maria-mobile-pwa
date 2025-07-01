@@ -36,7 +36,7 @@ export const PWAInstallPrompt: React.FC = () => {
       // Show prompt after a delay
       setTimeout(() => {
         setShowPrompt(true);
-      }, 3000);
+      }, 1000);
     };
 
     const handleAppInstalled = () => {

@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Bible } from "./pages/Bible";
+import { BookChapters } from "./pages/BookChapters";
+import { ChapterVerses } from "./pages/ChapterVerses";
 import { LeituraHoje } from "./pages/LeituraHoje";
 import { Rosario } from "./pages/Rosario";
 import { Terco } from "./pages/Terco";
@@ -23,6 +25,8 @@ const App = () => (
         <Layout>
           <Routes>
             <Route path="/" element={<Bible />} />
+            <Route path="/livro/:bookId" element={<BookChapters />} />
+            <Route path="/livro/:bookId/capitulo/:chapterNumber" element={<ChapterVerses />} />
             <Route path="/leitura-hoje" element={<LeituraHoje />} />
             <Route path="/rosario" element={<Rosario />} />
             <Route path="/terco" element={<Terco />} />

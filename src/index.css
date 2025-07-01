@@ -6,60 +6,60 @@
 
 @layer base {
   :root {
-    /* Cores principais - Paleta católica */
-    --background: 248 100% 99%;
-    --foreground: 230 15% 15%;
+    /* Cores principais - Azul Marinho e Dourado */
+    --background: 210 40% 98%;
+    --foreground: 222 84% 5%;
 
     --card: 0 0% 100%;
-    --card-foreground: 230 15% 15%;
+    --card-foreground: 222 84% 5%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 230 15% 15%;
+    --popover-foreground: 222 84% 5%;
 
-    /* Azul Mariano - Cor principal */
-    --primary: 220 91% 37%;
+    /* Azul Marinho - Cor principal */
+    --primary: 222 84% 15%;
     --primary-foreground: 0 0% 100%;
-    --primary-muted: 220 91% 47%;
+    --primary-muted: 222 84% 25%;
 
-    /* Dourado católico */
-    --secondary: 45 93% 47%;
-    --secondary-foreground: 230 15% 15%;
+    /* Dourado elegante */
+    --secondary: 43 96% 56%;
+    --secondary-foreground: 222 84% 5%;
 
-    --muted: 220 13% 95%;
-    --muted-foreground: 230 10% 50%;
+    --muted: 210 40% 95%;
+    --muted-foreground: 215 16% 47%;
 
-    /* Ouro suave para destaques */
-    --accent: 42 87% 55%;
-    --accent-foreground: 230 15% 15%;
+    /* Dourado para destaques */
+    --accent: 45 93% 47%;
+    --accent-foreground: 222 84% 5%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 95%;
-    --ring: 220 91% 37%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 222 84% 15%;
 
     --radius: 0.75rem;
 
     /* Cores específicas da aplicação */
-    --divine: 266 83% 58%;
+    --divine: 222 84% 15%;
     --divine-foreground: 0 0% 100%;
     
-    --prayer: 45 93% 47%;
-    --prayer-foreground: 230 15% 15%;
+    --prayer: 43 96% 56%;
+    --prayer-foreground: 222 84% 5%;
 
-    --sacred: 220 91% 37%;
+    --sacred: 222 84% 15%;
     --sacred-foreground: 0 0% 100%;
 
-    /* Gradientes sagrados */
-    --gradient-heaven: linear-gradient(135deg, hsl(220 91% 37%), hsl(266 83% 58%));
-    --gradient-gold: linear-gradient(135deg, hsl(45 93% 47%), hsl(42 87% 55%));
-    --gradient-divine: linear-gradient(180deg, hsl(248 100% 99%), hsl(220 13% 95%));
+    /* Gradientes sagrados - Azul Marinho dominante com toques dourados */
+    --gradient-heaven: linear-gradient(135deg, hsl(222 84% 15%), hsl(222 84% 25%), hsl(43 96% 56% / 0.2));
+    --gradient-gold: linear-gradient(135deg, hsl(43 96% 56%), hsl(45 93% 47%));
+    --gradient-divine: linear-gradient(180deg, hsl(210 40% 98%), hsl(214 32% 91%));
 
     /* Sombras suaves */
-    --shadow-soft: 0 2px 8px -2px hsl(220 91% 37% / 0.1);
-    --shadow-divine: 0 8px 32px -8px hsl(220 91% 37% / 0.2);
-    --shadow-golden: 0 4px 16px -4px hsl(45 93% 47% / 0.3);
+    --shadow-soft: 0 2px 8px -2px hsl(222 84% 15% / 0.1);
+    --shadow-divine: 0 8px 32px -8px hsl(222 84% 15% / 0.2);
+    --shadow-golden: 0 4px 16px -4px hsl(43 96% 56% / 0.3);
 
     /* Transições suaves */
     --transition-divine: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -126,7 +126,8 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground;
+    font-family: 'Poppins', sans-serif;
     background: var(--gradient-divine);
   }
 }
