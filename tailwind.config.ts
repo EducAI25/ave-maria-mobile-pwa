@@ -26,7 +26,8 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					muted: 'hsl(var(--primary-muted))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -61,6 +62,18 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				divine: {
+					DEFAULT: 'hsl(var(--divine))',
+					foreground: 'hsl(var(--divine-foreground))'
+				},
+				prayer: {
+					DEFAULT: 'hsl(var(--prayer))',
+					foreground: 'hsl(var(--prayer-foreground))'
+				},
+				sacred: {
+					DEFAULT: 'hsl(var(--sacred))',
+					foreground: 'hsl(var(--sacred-foreground))'
 				}
 			},
 			borderRadius: {

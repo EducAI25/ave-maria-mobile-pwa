@@ -2,41 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Design System da Bíblia Ave Maria - Cores católicas inspiradas */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Cores principais - Paleta católica */
+    --background: 248 100% 99%;
+    --foreground: 230 15% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 230 15% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 230 15% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Azul Mariano - Cor principal */
+    --primary: 220 91% 37%;
+    --primary-foreground: 0 0% 100%;
+    --primary-muted: 220 91% 47%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Dourado católico */
+    --secondary: 45 93% 47%;
+    --secondary-foreground: 230 15% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 13% 95%;
+    --muted-foreground: 230 10% 50%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Ouro suave para destaques */
+    --accent: 42 87% 55%;
+    --accent-foreground: 230 15% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 13% 91%;
+    --input: 220 13% 95%;
+    --ring: 220 91% 37%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Cores específicas da aplicação */
+    --divine: 266 83% 58%;
+    --divine-foreground: 0 0% 100%;
+    
+    --prayer: 45 93% 47%;
+    --prayer-foreground: 230 15% 15%;
+
+    --sacred: 220 91% 37%;
+    --sacred-foreground: 0 0% 100%;
+
+    /* Gradientes sagrados */
+    --gradient-heaven: linear-gradient(135deg, hsl(220 91% 37%), hsl(266 83% 58%));
+    --gradient-gold: linear-gradient(135deg, hsl(45 93% 47%), hsl(42 87% 55%));
+    --gradient-divine: linear-gradient(180deg, hsl(248 100% 99%), hsl(220 13% 95%));
+
+    /* Sombras suaves */
+    --shadow-soft: 0 2px 8px -2px hsl(220 91% 37% / 0.1);
+    --shadow-divine: 0 8px 32px -8px hsl(220 91% 37% / 0.2);
+    --shadow-golden: 0 4px 16px -4px hsl(45 93% 47% / 0.3);
+
+    /* Transições suaves */
+    --transition-divine: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +126,61 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    background: var(--gradient-divine);
+  }
+}
+
+@layer components {
+  /* Componentes customizados da aplicação */
+  .bible-gradient {
+    background: var(--gradient-heaven);
+  }
+  
+  .gold-gradient {
+    background: var(--gradient-gold);
+  }
+  
+  .divine-shadow {
+    box-shadow: var(--shadow-divine);
+  }
+  
+  .soft-shadow {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .golden-shadow {
+    box-shadow: var(--shadow-golden);
+  }
+  
+  .divine-transition {
+    transition: var(--transition-divine);
+  }
+
+  .verse-text {
+    @apply text-base leading-relaxed text-foreground/90;
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+
+  .sacred-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--primary)) transparent;
+  }
+
+  .sacred-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .sacred-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .sacred-scroll::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary));
+    border-radius: 4px;
+  }
+
+  .sacred-scroll::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary-muted));
   }
 }
