@@ -6,10 +6,16 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BIBLE_CONTENT } from '@/data/bibleContent';
 
+// Create a map for easier access to books by ID
+const BIBLE_CONTENT_MAP = BIBLE_CONTENT.reduce((acc, book) => {
+  acc[book.id] = book;
+  return acc;
+}, {} as Record<string, any>);
+
 export const BookChapters: React.FC = () => {
   const { bookId } = useParams<{ bookId: string }>();
   
-  if (!bookId || !BIBLE_CONTENT[bookId]) {
+  if (!bookId || !BIBLE_CONTENT_MAP[bookId]) {
     return (
       <div className="min-h-screen bg-background">
         <Header title="Livro não encontrado" subtitle="Ave Maria" />
@@ -26,7 +32,7 @@ export const BookChapters: React.FC = () => {
     );
   }
 
-  const book = BIBLE_CONTENT[bookId];
+  const book = BIBLE_CONTENT_MAP[bookId];
 
   return (
     <div className="min-h-screen bg-background">

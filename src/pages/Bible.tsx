@@ -7,6 +7,19 @@ import { Button } from '@/components/ui/button';
 import { BookOpen, Calendar, Clock } from 'lucide-react';
 import { BIBLE_CONTENT, getDailyVerse } from '@/data/bibleContent';
 
+// Create a map for easier access to books by ID
+const BIBLE_CONTENT_MAP = BIBLE_CONTENT.reduce((acc, book) => {
+  acc[book.id] = book;
+  return acc;
+}, {} as Record<string, any>);
+
+// Debug: Check if content is loaded
+console.log('BIBLE_CONTENT loaded:', BIBLE_CONTENT.length > 0);
+console.log('Sample book:', BIBLE_CONTENT[0]?.name);
+console.log('Sample chapters:', BIBLE_CONTENT[0]?.chapters?.length);
+
+
+
 interface Book {
   id: string;
   name: string;
@@ -16,74 +29,81 @@ interface Book {
 
 const BIBLE_BOOKS: Book[] = [
   // Antigo Testamento
-  { id: 'genesis', name: 'Gênesis', chapters: 50, testament: 'old' },
-  { id: 'exodus', name: 'Êxodo', chapters: 40, testament: 'old' },
-  { id: 'leviticus', name: 'Levítico', chapters: 27, testament: 'old' },
-  { id: 'numbers', name: 'Números', chapters: 36, testament: 'old' },
-  { id: 'deuteronomy', name: 'Deuteronômio', chapters: 34, testament: 'old' },
-  { id: 'joshua', name: 'Josué', chapters: 24, testament: 'old' },
-  { id: 'judges', name: 'Juízes', chapters: 21, testament: 'old' },
-  { id: 'ruth', name: 'Rute', chapters: 4, testament: 'old' },
-  { id: '1samuel', name: '1 Samuel', chapters: 31, testament: 'old' },
-  { id: '2samuel', name: '2 Samuel', chapters: 24, testament: 'old' },
-  { id: '1kings', name: '1 Reis', chapters: 22, testament: 'old' },
-  { id: '2kings', name: '2 Reis', chapters: 25, testament: 'old' },
-  { id: '1chronicles', name: '1 Crônicas', chapters: 29, testament: 'old' },
-  { id: '2chronicles', name: '2 Crônicas', chapters: 36, testament: 'old' },
-  { id: 'ezra', name: 'Esdras', chapters: 10, testament: 'old' },
-  { id: 'nehemiah', name: 'Neemias', chapters: 13, testament: 'old' },
-  { id: 'esther', name: 'Ester', chapters: 10, testament: 'old' },
-  { id: 'job', name: 'Jó', chapters: 42, testament: 'old' },
-  { id: 'psalms', name: 'Salmos', chapters: 150, testament: 'old' },
-  { id: 'proverbs', name: 'Provérbios', chapters: 31, testament: 'old' },
-  { id: 'ecclesiastes', name: 'Eclesiastes', chapters: 12, testament: 'old' },
-  { id: 'song', name: 'Cânticos', chapters: 8, testament: 'old' },
-  { id: 'isaiah', name: 'Isaías', chapters: 66, testament: 'old' },
-  { id: 'jeremiah', name: 'Jeremias', chapters: 52, testament: 'old' },
-  { id: 'lamentations', name: 'Lamentações', chapters: 5, testament: 'old' },
-  { id: 'ezekiel', name: 'Ezequiel', chapters: 48, testament: 'old' },
+  { id: 'gnesis', name: 'Gênesis', chapters: 50, testament: 'old' },
+  { id: 'xodo', name: 'Êxodo', chapters: 40, testament: 'old' },
+  { id: 'levtico', name: 'Levítico', chapters: 27, testament: 'old' },
+  { id: 'nmeros', name: 'Números', chapters: 36, testament: 'old' },
+  { id: 'deuteronmio', name: 'Deuteronômio', chapters: 34, testament: 'old' },
+  { id: 'josu', name: 'Josué', chapters: 24, testament: 'old' },
+  { id: 'juzes', name: 'Juízes', chapters: 21, testament: 'old' },
+  { id: 'rute', name: 'Rute', chapters: 4, testament: 'old' },
+  { id: 'isamuel', name: '1 Samuel', chapters: 31, testament: 'old' },
+  { id: 'iisamuel', name: '2 Samuel', chapters: 24, testament: 'old' },
+  { id: 'ireis', name: '1 Reis', chapters: 22, testament: 'old' },
+  { id: 'iireis', name: '2 Reis', chapters: 25, testament: 'old' },
+  { id: 'icrnicas', name: '1 Crônicas', chapters: 29, testament: 'old' },
+  { id: 'iicrnicas', name: '2 Crônicas', chapters: 36, testament: 'old' },
+  { id: 'esdras', name: 'Esdras', chapters: 10, testament: 'old' },
+  { id: 'neemias', name: 'Neemias', chapters: 13, testament: 'old' },
+  { id: 'tobias', name: 'Tobias', chapters: 14, testament: 'old' },
+  { id: 'judite', name: 'Judite', chapters: 16, testament: 'old' },
+  { id: 'ester', name: 'Ester', chapters: 10, testament: 'old' },
+  { id: 'j', name: 'Jó', chapters: 42, testament: 'old' },
+  { id: 'salmos', name: 'Salmos', chapters: 150, testament: 'old' },
+  { id: 'imacabeus', name: '1 Macabeus', chapters: 16, testament: 'old' },
+  { id: 'iimacabeus', name: '2 Macabeus', chapters: 15, testament: 'old' },
+  { id: 'provrbios', name: 'Provérbios', chapters: 31, testament: 'old' },
+  { id: 'eclesiastes', name: 'Eclesiastes', chapters: 12, testament: 'old' },
+  { id: 'cnticodoscnticos', name: 'Cânticos', chapters: 8, testament: 'old' },
+  { id: 'sabedoria', name: 'Sabedoria', chapters: 19, testament: 'old' },
+  { id: 'eclesistico', name: 'Eclesiástico', chapters: 51, testament: 'old' },
+  { id: 'isaas', name: 'Isaías', chapters: 66, testament: 'old' },
+  { id: 'jeremias', name: 'Jeremias', chapters: 52, testament: 'old' },
+  { id: 'lamentaes', name: 'Lamentações', chapters: 5, testament: 'old' },
+  { id: 'baruc', name: 'Baruc', chapters: 6, testament: 'old' },
+  { id: 'ezequiel', name: 'Ezequiel', chapters: 48, testament: 'old' },
   { id: 'daniel', name: 'Daniel', chapters: 12, testament: 'old' },
-  { id: 'hosea', name: 'Oseias', chapters: 14, testament: 'old' },
+  { id: 'osias', name: 'Oseias', chapters: 14, testament: 'old' },
   { id: 'joel', name: 'Joel', chapters: 3, testament: 'old' },
-  { id: 'amos', name: 'Amós', chapters: 9, testament: 'old' },
-  { id: 'obadiah', name: 'Obadias', chapters: 1, testament: 'old' },
-  { id: 'jonah', name: 'Jonas', chapters: 4, testament: 'old' },
-  { id: 'micah', name: 'Miqueias', chapters: 7, testament: 'old' },
-  { id: 'nahum', name: 'Naum', chapters: 3, testament: 'old' },
-  { id: 'habakkuk', name: 'Habacuque', chapters: 3, testament: 'old' },
-  { id: 'zephaniah', name: 'Sofonias', chapters: 3, testament: 'old' },
-  { id: 'haggai', name: 'Ageu', chapters: 2, testament: 'old' },
-  { id: 'zechariah', name: 'Zacarias', chapters: 14, testament: 'old' },
-  { id: 'malachi', name: 'Malaquias', chapters: 4, testament: 'old' },
+  { id: 'ams', name: 'Amós', chapters: 9, testament: 'old' },
+  { id: 'abdias', name: 'Obadias', chapters: 1, testament: 'old' },
+  { id: 'jonas', name: 'Jonas', chapters: 4, testament: 'old' },
+  { id: 'miquias', name: 'Miqueias', chapters: 7, testament: 'old' },
+  { id: 'naum', name: 'Naum', chapters: 3, testament: 'old' },
+  { id: 'habacuc', name: 'Habacuque', chapters: 3, testament: 'old' },
+  { id: 'sofonias', name: 'Sofonias', chapters: 3, testament: 'old' },
+  { id: 'ageu', name: 'Ageu', chapters: 2, testament: 'old' },
+  { id: 'zacarias', name: 'Zacarias', chapters: 14, testament: 'old' },
+  { id: 'malaquias', name: 'Malaquias', chapters: 4, testament: 'old' },
 
   // Novo Testamento
-  { id: 'matthew', name: 'Mateus', chapters: 28, testament: 'new' },
-  { id: 'mark', name: 'Marcos', chapters: 16, testament: 'new' },
-  { id: 'luke', name: 'Lucas', chapters: 24, testament: 'new' },
-  { id: 'john', name: 'João', chapters: 21, testament: 'new' },
-  { id: 'acts', name: 'Atos', chapters: 28, testament: 'new' },
-  { id: 'romans', name: 'Romanos', chapters: 16, testament: 'new' },
-  { id: '1corinthians', name: '1 Coríntios', chapters: 16, testament: 'new' },
-  { id: '2corinthians', name: '2 Coríntios', chapters: 13, testament: 'new' },
-  { id: 'galatians', name: 'Gálatas', chapters: 6, testament: 'new' },
-  { id: 'ephesians', name: 'Efésios', chapters: 6, testament: 'new' },
-  { id: 'philippians', name: 'Filipenses', chapters: 4, testament: 'new' },
-  { id: 'colossians', name: 'Colossenses', chapters: 4, testament: 'new' },
-  { id: '1thessalonians', name: '1 Tessalonicenses', chapters: 5, testament: 'new' },
-  { id: '2thessalonians', name: '2 Tessalonicenses', chapters: 3, testament: 'new' },
-  { id: '1timothy', name: '1 Timóteo', chapters: 6, testament: 'new' },
-  { id: '2timothy', name: '2 Timóteo', chapters: 4, testament: 'new' },
-  { id: 'titus', name: 'Tito', chapters: 3, testament: 'new' },
-  { id: 'philemon', name: 'Filemom', chapters: 1, testament: 'new' },
-  { id: 'hebrews', name: 'Hebreus', chapters: 13, testament: 'new' },
-  { id: 'james', name: 'Tiago', chapters: 5, testament: 'new' },
-  { id: '1peter', name: '1 Pedro', chapters: 5, testament: 'new' },
-  { id: '2peter', name: '2 Pedro', chapters: 3, testament: 'new' },
-  { id: '1john', name: '1 João', chapters: 5, testament: 'new' },
-  { id: '2john', name: '2 João', chapters: 1, testament: 'new' },
-  { id: '3john', name: '3 João', chapters: 1, testament: 'new' },
-  { id: 'jude', name: 'Judas', chapters: 1, testament: 'new' },
-  { id: 'revelation', name: 'Apocalipse', chapters: 22, testament: 'new' }
+  { id: 'somateus', name: 'Mateus', chapters: 28, testament: 'new' },
+  { id: 'somarcos', name: 'Marcos', chapters: 16, testament: 'new' },
+  { id: 'solucas', name: 'Lucas', chapters: 24, testament: 'new' },
+  { id: 'sojoo', name: 'João', chapters: 21, testament: 'new' },
+  { id: 'atosdosapstolos', name: 'Atos', chapters: 28, testament: 'new' },
+  { id: 'romanos', name: 'Romanos', chapters: 16, testament: 'new' },
+  { id: 'icorntios', name: '1 Coríntios', chapters: 16, testament: 'new' },
+  { id: 'iicorntios', name: '2 Coríntios', chapters: 13, testament: 'new' },
+  { id: 'glatas', name: 'Gálatas', chapters: 6, testament: 'new' },
+  { id: 'efsios', name: 'Efésios', chapters: 6, testament: 'new' },
+  { id: 'filipenses', name: 'Filipenses', chapters: 4, testament: 'new' },
+  { id: 'colossenses', name: 'Colossenses', chapters: 4, testament: 'new' },
+  { id: 'itessalonicenses', name: '1 Tessalonicenses', chapters: 5, testament: 'new' },
+  { id: 'iitessalonicenses', name: '2 Tessalonicenses', chapters: 3, testament: 'new' },
+  { id: 'itimteo', name: '1 Timóteo', chapters: 6, testament: 'new' },
+  { id: 'iitimteo', name: '2 Timóteo', chapters: 4, testament: 'new' },
+  { id: 'tito', name: 'Tito', chapters: 3, testament: 'new' },
+  { id: 'filmon', name: 'Filemom', chapters: 1, testament: 'new' },
+  { id: 'hebreus', name: 'Hebreus', chapters: 13, testament: 'new' },
+  { id: 'sotiago', name: 'Tiago', chapters: 5, testament: 'new' },
+  { id: 'isopedro', name: '1 Pedro', chapters: 5, testament: 'new' },
+  { id: 'iisopedro', name: '2 Pedro', chapters: 3, testament: 'new' },
+  { id: 'isojoo', name: '1 João', chapters: 5, testament: 'new' },
+  { id: 'iisojoo', name: '2 João', chapters: 1, testament: 'new' },
+  { id: 'iiisojoo', name: '3 João', chapters: 1, testament: 'new' },
+  { id: 'sojudas', name: 'Judas', chapters: 1, testament: 'new' },
+  { id: 'apocalipse', name: 'Apocalipse', chapters: 22, testament: 'new' }
 ];
 
 export const Bible: React.FC = () => {
@@ -199,15 +219,15 @@ export const Bible: React.FC = () => {
             <h2 className="text-lg font-semibold text-primary mb-3">Antigo Testamento</h2>
             <div className="grid grid-cols-2 gap-3">
               {oldTestamentBooks.map((book) => (
-                <Link key={book.id} to={BIBLE_CONTENT[book.id] ? `/livro/${book.id}` : '#'}>
-                  <Card className={`p-3 hover:shadow-md divine-transition cursor-pointer ${!BIBLE_CONTENT[book.id] ? 'opacity-50' : ''}`}>
+                <Link key={book.id} to={BIBLE_CONTENT_MAP[book.id] ? `/livro/${book.id}` : '#'}>
+                  <Card className={`p-3 hover:shadow-md divine-transition cursor-pointer ${!BIBLE_CONTENT_MAP[book.id] ? 'opacity-50' : ''}`}>
                     <div className="flex items-center gap-2">
                       <BookOpen size={16} className="text-primary" />
                       <div className="flex-1 min-w-0">
                         <h3 className="font-medium text-sm truncate">{book.name}</h3>
                         <p className="text-xs text-muted-foreground">
-                          {BIBLE_CONTENT[book.id] 
-                            ? `${BIBLE_CONTENT[book.id].chapters.length} capítulo${BIBLE_CONTENT[book.id].chapters.length !== 1 ? 's' : ''}`
+                          {BIBLE_CONTENT_MAP[book.id] 
+                            ? `${BIBLE_CONTENT_MAP[book.id].chapters.length} capítulo${BIBLE_CONTENT_MAP[book.id].chapters.length !== 1 ? 's' : ''}`
                             : 'Em breve'
                           }
                         </p>
@@ -226,15 +246,15 @@ export const Bible: React.FC = () => {
             <h2 className="text-lg font-semibold text-primary mb-3">Novo Testamento</h2>
             <div className="grid grid-cols-2 gap-3">
               {newTestamentBooks.map((book) => (
-                <Link key={book.id} to={BIBLE_CONTENT[book.id] ? `/livro/${book.id}` : '#'}>
-                  <Card className={`p-3 hover:shadow-md divine-transition cursor-pointer ${!BIBLE_CONTENT[book.id] ? 'opacity-50' : ''}`}>
+                <Link key={book.id} to={BIBLE_CONTENT_MAP[book.id] ? `/livro/${book.id}` : '#'}>
+                  <Card className={`p-3 hover:shadow-md divine-transition cursor-pointer ${!BIBLE_CONTENT_MAP[book.id] ? 'opacity-50' : ''}`}>
                     <div className="flex items-center gap-2">
                       <BookOpen size={16} className="text-primary" />
                       <div className="flex-1 min-w-0">
                         <h3 className="font-medium text-sm truncate">{book.name}</h3>
                         <p className="text-xs text-muted-foreground">
-                          {BIBLE_CONTENT[book.id] 
-                            ? `${BIBLE_CONTENT[book.id].chapters.length} capítulo${BIBLE_CONTENT[book.id].chapters.length !== 1 ? 's' : ''}`
+                          {BIBLE_CONTENT_MAP[book.id] 
+                            ? `${BIBLE_CONTENT_MAP[book.id].chapters.length} capítulo${BIBLE_CONTENT_MAP[book.id].chapters.length !== 1 ? 's' : ''}`
                             : 'Em breve'
                           }
                         </p>

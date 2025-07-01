@@ -6,10 +6,16 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BIBLE_CONTENT } from '@/data/bibleContent';
 
+// Create a map for easier access to books by ID
+const BIBLE_CONTENT_MAP = BIBLE_CONTENT.reduce((acc, book) => {
+  acc[book.id] = book;
+  return acc;
+}, {} as Record<string, any>);
+
 export const ChapterVerses: React.FC = () => {
   const { bookId, chapterNumber } = useParams<{ bookId: string; chapterNumber: string }>();
   
-  if (!bookId || !chapterNumber || !BIBLE_CONTENT[bookId]) {
+  if (!bookId || !chapterNumber || !BIBLE_CONTENT_MAP[bookId]) {
     return (
       <div className="min-h-screen bg-background">
         <Header title="Capítulo não encontrado" subtitle="Ave Maria" />
@@ -26,7 +32,7 @@ export const ChapterVerses: React.FC = () => {
     );
   }
 
-  const book = BIBLE_CONTENT[bookId];
+  const book = BIBLE_CONTENT_MAP[bookId];
   const chapter = book.chapters.find(c => c.number === parseInt(chapterNumber));
 
   if (!chapter) {
@@ -77,11 +83,11 @@ export const ChapterVerses: React.FC = () => {
         {/* Versículos */}
         <div className="space-y-3">
           {chapter.verses.map((verse) => (
-            <Card key={verse.number} className="p-4 hover:shadow-md divine-transition">
+            <Card key={verse.verse} className="p-4 hover:shadow-md divine-transition">
               <div className="flex gap-3">
                 <div className="flex-shrink-0">
                   <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground text-sm font-bold">
-                    {verse.number}
+                    {verse.verse}
                   </span>
                 </div>
                 <div className="flex-1">
