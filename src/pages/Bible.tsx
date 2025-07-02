@@ -194,7 +194,7 @@ export const Bible: React.FC = () => {
         {/* Versículo do Dia */}
         <Card className="p-4 bg-primary text-white">
           <h3 className="font-semibold mb-2">📖 Versículo do Dia</h3>
-          <p className="text-sm opacity-90 mb-3 verse-text text-white">
+          <p className="text-sm opacity-90 mb-3 verse-text">
             {(() => {
               const dailyVerse = getDailyVerse();
               return `"${dailyVerse.text}"`;
