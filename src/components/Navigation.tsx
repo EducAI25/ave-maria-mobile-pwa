@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Calendar, Heart, MessageSquare, GraduationCap } from 'lucide-react';
+import { BookOpen, Heart, MessageSquare, GraduationCap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface NavigationProps {
@@ -14,12 +14,6 @@ export const Navigation: React.FC<NavigationProps> = ({ currentPath }) => {
       icon: BookOpen,
       label: 'Bíblia',
       isActive: currentPath === '/'
-    },
-    {
-      href: '/leitura-hoje',
-      icon: Calendar,
-      label: 'Hoje',
-      isActive: currentPath === '/leitura-hoje'
     },
     {
       href: '/oracoes',
