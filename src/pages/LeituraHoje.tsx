@@ -1,67 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from '@/components/Header';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { BookOpen, Calendar, MessageSquare } from 'lucide-react';
-
-interface DailyReading {
-  date: string;
-  liturgicalSeason: string;
-  color: string;
-  firstReading: {
-    title: string;
-    reference: string;
-    text: string;
-  };
-  psalm: {
-    title: string;
-    reference: string;
-    text: string;
-    response: string;
-  };
-  secondReading?: {
-    title: string;
-    reference: string;
-    text: string;
-  };
-  gospel: {
-    title: string;
-    reference: string;
-    text: string;
-  };
-  reflection: string;
-  saint: string;
-}
-
-const TODAY_READING: DailyReading = {
-  date: new Date().toLocaleDateString('pt-BR', { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  }),
-  liturgicalSeason: 'Tempo Comum',
-  color: 'Verde',
-  firstReading: {
-    title: 'Primeira Leitura',
-    reference: '1 João 5,1-6',
-    text: 'Caríssimos: Todo aquele que crê que Jesus é o Cristo nasceu de Deus; e todo aquele que ama quem gerou, ama também quem foi gerado por ele. Nisto conhecemos que amamos os filhos de Deus: quando amamos a Deus e observamos os seus mandamentos. Porque o amor de Deus consiste nisto: em observarmos os seus mandamentos. E os seus mandamentos não são pesados, porque todo aquele que nasceu de Deus vence o mundo. E esta é a vitória que vence o mundo: a nossa fé. Quem é que vence o mundo, senão aquele que crê que Jesus é o Filho de Deus? Este é aquele que veio pela água e pelo sangue: Jesus Cristo. Não só pela água, mas pela água e pelo sangue. E o Espírito é que dá testemunho, porque o Espírito é a verdade.'
-  },
-  psalm: {
-    title: 'Salmo Responsorial',
-    reference: 'Salmo 23(24)',
-    response: 'Senhor, quem habitará em vossa casa?',
-    text: 'Senhor, quem habitará em vossa casa e no vosso monte santo descansará? Quem procede corretamente e pratica a justiça, quem fala a verdade que sente no seu coração; quem não fala mal do seu próximo, nem prejudica o companheiro, nem aceita calúnias contra o vizinho; quem despreza aquele que Deus reprova, mas honra os que temem ao Senhor; quem não se desdiz ao fazer juramento, mesmo em prejuízo seu; quem não empresta o seu dinheiro com usura, nem aceita presentes contra o inocente. Quem procede assim ficará sempre firme!'
-  },
-  gospel: {
-    title: 'Evangelho',
-    reference: 'João 15,1-8',
-    text: 'Naquele tempo, disse Jesus aos seus discípulos: "Eu sou a videira verdadeira, e meu Pai é o agricultor. Todo ramo que não dá fruto em mim, ele o corta; e todo ramo que dá fruto, ele o limpa, para que dê mais fruto ainda. Vós já estais limpos pela palavra que vos anunciei. Permanecei em mim, como eu permaneço em vós. Como o ramo não pode dar fruto por si mesmo, se não permanecer na videira, assim também vós não podeis dar fruto, se não permanecerdes em mim. Eu sou a videira, vós sois os ramos. Quem permanece em mim e eu nele, esse dá muito fruto; porque sem mim nada podeis fazer. Quem não permanece em mim é lançado fora, como o ramo, e seca. Tais ramos são recolhidos, lançados ao fogo e queimados. Se permanecerdes em mim, e as minhas palavras permanecerem em vós, pedi o que quiserdes e vos será feito. Nisto meu Pai é glorificado: que deis muito fruto e vos torneis meus discípulos."'
-  },
-  reflection: 'Jesus se apresenta como a videira verdadeira e nós como os ramos. Esta imagem nos ensina sobre a importância da união com Cristo. Assim como o ramo precisa permanecer ligado à videira para dar frutos, nós precisamos permanecer unidos a Jesus para que nossa vida produza frutos de amor, paz, justiça e bondade. A permanência em Cristo se dá através da oração, dos sacramentos, da vivência da Palavra de Deus e do amor ao próximo.',
-  saint: 'São José Operário'
-};
+import { BookOpen, Calendar, MessageSquare, Loader2 } from 'lucide-react';
+import { getLiturgyForDate, DailyReading } from '@/data/liturgicalCalendar';
 
 const READING_SECTIONS = [
   { id: 'firstReading', name: '1ª Leitura', icon: '📖' },
@@ -72,8 +15,31 @@ const READING_SECTIONS = [
 
 export const LeituraHoje: React.FC = () => {
   const [selectedSection, setSelectedSection] = useState<string>('firstReading');
+  const [todayReading, setTodayReading] = useState<DailyReading | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Carregar a liturgia do dia
+    const loadLiturgy = async () => {
+      setLoading(true);
+      try {
+        const liturgy = getLiturgyForDate(new Date());
+        setTodayReading(liturgy);
+      } catch (error) {
+        console.error('Erro ao carregar liturgia:', error);
+        // Fallback para dados estáticos
+        setTodayReading(getLiturgyForDate(new Date()));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadLiturgy();
+  }, []);
 
   const renderContent = () => {
+    if (!todayReading) return null;
+
     switch (selectedSection) {
       case 'firstReading':
         return (
@@ -81,12 +47,12 @@ export const LeituraHoje: React.FC = () => {
             <div className="flex items-center gap-2">
               <BookOpen size={20} className="text-primary" />
               <div>
-                <h3 className="font-semibold text-primary">{TODAY_READING.firstReading.title}</h3>
-                <p className="text-sm text-muted-foreground">{TODAY_READING.firstReading.reference}</p>
+                <h3 className="font-semibold text-primary">{todayReading.firstReading.title}</h3>
+                <p className="text-sm text-muted-foreground">{todayReading.firstReading.reference}</p>
               </div>
             </div>
             <div className="verse-text">
-              {TODAY_READING.firstReading.text}
+              {todayReading.firstReading.text}
             </div>
           </div>
         );
@@ -97,17 +63,17 @@ export const LeituraHoje: React.FC = () => {
             <div className="flex items-center gap-2">
               <BookOpen size={20} className="text-primary" />
               <div>
-                <h3 className="font-semibold text-primary">{TODAY_READING.psalm.title}</h3>
-                <p className="text-sm text-muted-foreground">{TODAY_READING.psalm.reference}</p>
+                <h3 className="font-semibold text-primary">{todayReading.psalm.title}</h3>
+                <p className="text-sm text-muted-foreground">{todayReading.psalm.reference}</p>
               </div>
             </div>
             <Card className="p-3 bg-primary/10">
               <p className="font-medium text-primary text-center">
-                {TODAY_READING.psalm.response}
+                {todayReading.psalm.response}
               </p>
             </Card>
             <div className="verse-text">
-              {TODAY_READING.psalm.text}
+              {todayReading.psalm.text}
             </div>
           </div>
         );
@@ -118,12 +84,12 @@ export const LeituraHoje: React.FC = () => {
             <div className="flex items-center gap-2">
               <BookOpen size={20} className="text-primary" />
               <div>
-                <h3 className="font-semibold text-primary">{TODAY_READING.gospel.title}</h3>
-                <p className="text-sm text-muted-foreground">{TODAY_READING.gospel.reference}</p>
+                <h3 className="font-semibold text-primary">{todayReading.gospel.title}</h3>
+                <p className="text-sm text-muted-foreground">{todayReading.gospel.reference}</p>
               </div>
             </div>
             <div className="verse-text">
-              {TODAY_READING.gospel.text}
+              {todayReading.gospel.text}
             </div>
           </div>
         );
@@ -136,7 +102,7 @@ export const LeituraHoje: React.FC = () => {
               <h3 className="font-semibold text-primary">Reflexão do Dia</h3>
             </div>
             <div className="text-base leading-relaxed text-foreground/90">
-              {TODAY_READING.reflection}
+              {todayReading.reflection}
             </div>
           </div>
         );
@@ -146,9 +112,30 @@ export const LeituraHoje: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+          <p className="text-muted-foreground">Carregando liturgia do dia...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!todayReading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <p className="text-muted-foreground">Erro ao carregar a liturgia do dia</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
-      <Header title="Leitura de Hoje" subtitle="Liturgia diária" />
+      <Header title="Liturgia de Hoje" subtitle="Leituras do dia" />
       
       <div className="p-4 space-y-4">
         {/* Today's Info */}
@@ -156,22 +143,27 @@ export const LeituraHoje: React.FC = () => {
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold">📅 Liturgia de Hoje</h3>
             <Badge variant="secondary" className="text-primary">
-              {TODAY_READING.color}
+              {todayReading.color}
             </Badge>
           </div>
           <p className="text-sm opacity-90 mb-1">
-            {TODAY_READING.date}
+            {todayReading.date}
           </p>
           <p className="text-xs opacity-75">
-            {TODAY_READING.liturgicalSeason}
+            {todayReading.liturgicalSeason}
           </p>
+          {todayReading.feast && (
+            <p className="text-xs opacity-75 mt-1">
+              🎉 {todayReading.feast}
+            </p>
+          )}
         </Card>
 
         {/* Saint of the Day */}
         <Card className="p-4 bg-secondary text-white">
           <div className="text-center">
             <h3 className="font-semibold mb-1">👑 Santo do Dia</h3>
-            <p className="text-lg font-medium">{TODAY_READING.saint}</p>
+            <p className="text-lg font-medium">{todayReading.saint}</p>
           </div>
         </Card>
 
@@ -202,9 +194,9 @@ export const LeituraHoje: React.FC = () => {
         <Card className="p-4">
           <h3 className="font-semibold mb-3">🙏 Oração do Dia</h3>
           <div className="verse-text">
-            "Senhor Jesus, videira verdadeira, ajudai-nos a permanecer sempre unidos a Vós. 
-            Que possamos dar frutos abundantes de amor, paz e justiça. 
-            Fazei que nossa vida seja sempre um testemunho da vossa presença entre nós. 
+            "Senhor Jesus, que nos destes a vossa Palavra como luz para os nossos passos, 
+            ajudai-nos a meditar e viver as leituras de hoje. 
+            Que a vossa graça nos fortaleça para sermos testemunhas do vosso amor. 
             Amém."
           </div>
         </Card>
