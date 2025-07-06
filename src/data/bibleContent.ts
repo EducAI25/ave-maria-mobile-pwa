@@ -152,7 +152,9 @@ export const BIBLE_CONTENT: Book[] = [
 
 export const getDailyVerse = (): Verse => {
   const today = new Date();
-  const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
+  // Create a more robust day calculation that updates properly
+  const startOfYear = new Date(today.getFullYear(), 0, 1);
+  const dayOfYear = Math.ceil((today.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
   
   const allVerses: Verse[] = [];
   BIBLE_CONTENT.forEach(book => {
@@ -163,6 +165,8 @@ export const getDailyVerse = (): Verse => {
     });
   });
   
-  const verseIndex = dayOfYear % allVerses.length;
+  // Use a more complex algorithm to ensure variety
+  const seed = dayOfYear + today.getMonth() * 31 + today.getDate();
+  const verseIndex = seed % allVerses.length;
   return allVerses[verseIndex];
 };

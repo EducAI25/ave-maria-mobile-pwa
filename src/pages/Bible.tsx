@@ -148,7 +148,7 @@ export const Bible: React.FC = () => {
               onClick={() => setActiveTestament('old')}
               className="flex-1"
             >
-              Antigo Testamento
+              A. Testamento
             </Button>
             <Button
               variant={activeTestament === 'new' ? 'default' : 'outline'}
@@ -156,7 +156,7 @@ export const Bible: React.FC = () => {
               onClick={() => setActiveTestament('new')}
               className="flex-1"
             >
-              Novo Testamento
+              N. Testamento
             </Button>
           </div>
         </div>
@@ -181,11 +181,11 @@ export const Bible: React.FC = () => {
             </Card>
           </Link>
           
-          <Link to="/missa">
-            <Card className="p-3 bg-primary text-white hover:opacity-90 divine-transition">
+          <Link to="/oracoes">
+            <Card className="p-3 bg-secondary text-white hover:opacity-90 divine-transition">
               <div className="text-center">
                 <BookOpen size={20} className="mx-auto mb-2" />
-                <h3 className="font-medium text-sm">Missa</h3>
+                <h3 className="font-medium text-sm">Orações</h3>
               </div>
             </Card>
           </Link>
@@ -193,14 +193,14 @@ export const Bible: React.FC = () => {
 
         {/* Versículo do Dia */}
         <Card className="p-4 bg-primary text-white">
-          <h3 className="font-semibold mb-2">📖 Versículo do Dia</h3>
-          <p className="text-sm opacity-90 mb-3 verse-text">
+          <h3 className="font-semibold mb-2 text-white">📖 Versículo do Dia</h3>
+          <p className="text-sm mb-3 verse-text text-white">
             {(() => {
               const dailyVerse = getDailyVerse();
               return `"${dailyVerse.text}"`;
             })()}
           </p>
-          <p className="text-xs font-medium">
+          <p className="text-xs font-medium text-white">
             {(() => {
               const dailyVerse = getDailyVerse();
               return `${dailyVerse.book} ${dailyVerse.chapter}:${dailyVerse.verse}`;
@@ -216,7 +216,7 @@ export const Bible: React.FC = () => {
         {/* Old Testament */}
         {(activeTestament === 'all' || activeTestament === 'old') && oldTestamentBooks.length > 0 && (
           <div>
-            <h2 className="text-lg font-semibold text-primary mb-3">Antigo Testamento</h2>
+            <h2 className="text-lg font-semibold text-primary mb-3">A. Testamento</h2>
             <div className="grid grid-cols-2 gap-3">
               {oldTestamentBooks.map((book) => (
                 <Link key={book.id} to={BIBLE_CONTENT_MAP[book.id] ? `/livro/${book.id}` : '#'}>
@@ -243,7 +243,7 @@ export const Bible: React.FC = () => {
         {/* New Testament */}
         {(activeTestament === 'all' || activeTestament === 'new') && newTestamentBooks.length > 0 && (
           <div>
-            <h2 className="text-lg font-semibold text-primary mb-3">Novo Testamento</h2>
+            <h2 className="text-lg font-semibold text-primary mb-3">N. Testamento</h2>
             <div className="grid grid-cols-2 gap-3">
               {newTestamentBooks.map((book) => (
                 <Link key={book.id} to={BIBLE_CONTENT_MAP[book.id] ? `/livro/${book.id}` : '#'}>

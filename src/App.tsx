@@ -10,7 +10,9 @@ import { ChapterVerses } from "./pages/ChapterVerses";
 import { LeituraHoje } from "./pages/LeituraHoje";
 import { Rosario } from "./pages/Rosario";
 import { Terco } from "./pages/Terco";
-import { Missa } from "./pages/Missa";
+import { Oracoes } from "./pages/Oracoes";
+import { OracaoDetail } from "./pages/OracaoDetail";
+import { ComoLerBiblia } from "./pages/ComoLerBiblia";
 import { Anotacoes } from "./pages/Anotacoes";
 import NotFound from "./pages/NotFound";
 
@@ -30,7 +32,9 @@ const App = () => (
             <Route path="/leitura-hoje" element={<LeituraHoje />} />
             <Route path="/rosario" element={<Rosario />} />
             <Route path="/terco" element={<Terco />} />
-            <Route path="/missa" element={<Missa />} />
+            <Route path="/oracoes" element={<Oracoes />} />
+            <Route path="/oracao/:oracaoId" element={<OracaoDetail />} />
+            <Route path="/como-ler-biblia" element={<ComoLerBiblia />} />
             <Route path="/anotacoes" element={<Anotacoes />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
