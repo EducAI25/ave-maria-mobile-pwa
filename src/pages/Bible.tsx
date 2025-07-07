@@ -4,8 +4,8 @@ import { Header } from '@/components/Header';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Calendar, Clock } from 'lucide-react';
-import { BIBLE_CONTENT, getDailyVerse } from '@/data/bibleContent';
+import { BookOpen, Calendar, Clock, Star, MessageSquare } from 'lucide-react';
+import { BIBLE_CONTENT } from '@/data/bibleContent';
 
 // Create a map for easier access to books by ID
 const BIBLE_CONTENT_MAP = BIBLE_CONTENT.reduce((acc, book) => {
@@ -163,15 +163,6 @@ export const Bible: React.FC = () => {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-3 gap-3">
-          <Link to="/leitura-hoje">
-            <Card className="p-3 bg-primary text-white hover:opacity-90 divine-transition">
-              <div className="text-center">
-                <Calendar size={20} className="mx-auto mb-2" />
-                <h3 className="font-medium text-sm">Leitura de Hoje</h3>
-              </div>
-            </Card>
-          </Link>
-          
           <Link to="/terco">
             <Card className="p-3 bg-secondary text-white hover:opacity-90 divine-transition">
               <div className="text-center">
@@ -189,28 +180,31 @@ export const Bible: React.FC = () => {
               </div>
             </Card>
           </Link>
+          
+          <Link to="/anotacoes">
+            <Card className="p-3 bg-secondary text-white hover:opacity-90 divine-transition">
+              <div className="text-center">
+                <MessageSquare size={20} className="mx-auto mb-2" />
+                <h3 className="font-medium text-sm">Notas</h3>
+              </div>
+            </Card>
+          </Link>
         </div>
 
-        {/* Versículo do Dia */}
-        <Card className="p-4 bg-primary text-white">
-          <h3 className="font-semibold mb-2 text-white">📖 Versículo do Dia</h3>
-          <p className="text-sm mb-3 verse-text text-white">
-            {(() => {
-              const dailyVerse = getDailyVerse();
-              return `"${dailyVerse.text}"`;
-            })()}
-          </p>
-          <p className="text-xs font-medium text-white">
-            {(() => {
-              const dailyVerse = getDailyVerse();
-              return `${dailyVerse.book} ${dailyVerse.chapter}:${dailyVerse.verse}`;
-            })()}
-          </p>
-          <Link to="/leitura-hoje">
-            <Button variant="secondary" size="sm" className="mt-3 bg-white/20 text-white border-white/30 hover:bg-white/30">
-              Ver leitura completa
+        {/* Favoritos */}
+        <Card className="p-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Star size={24} className="text-white" />
+              <div>
+                <h3 className="font-semibold text-white">⭐ Favoritos</h3>
+                <p className="text-sm text-white/90">Seus versículos marcados</p>
+              </div>
+            </div>
+            <Button variant="secondary" size="sm" className="bg-white/20 text-white border-white/30 hover:bg-white/30">
+              Ver todos
             </Button>
-          </Link>
+          </div>
         </Card>
 
         {/* Old Testament */}
