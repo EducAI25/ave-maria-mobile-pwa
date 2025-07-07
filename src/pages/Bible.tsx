@@ -175,7 +175,7 @@ export const Bible: React.FC = () => {
           </Link>
           
           <Link to="/oracoes">
-            <Card className="p-3 bg-secondary text-white hover:opacity-90 divine-transition">
+            <Card className="p-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:opacity-90 divine-transition">
               <div className="text-center">
                 <BookOpen size={20} className="mx-auto mb-2" />
                 <h3 className="font-medium text-sm">Orações</h3>
@@ -195,7 +195,7 @@ export const Bible: React.FC = () => {
 
         {/* Favoritos */}
         <Link to="/favoritos">
-          <Card className="p-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white hover:opacity-90 divine-transition">
+          <Card className="p-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:opacity-90 divine-transition">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Star size={24} className="text-white" />

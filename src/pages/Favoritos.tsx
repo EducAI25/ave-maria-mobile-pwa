@@ -25,7 +25,7 @@ export const Favoritos: React.FC = () => {
         </div>
 
         {/* Header */}
-        <Card className="p-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white">
+        <Card className="p-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Heart size={24} className="text-white" />
