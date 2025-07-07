@@ -98,20 +98,20 @@ export const ChapterVerses: React.FC = () => {
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className={`${isFavorite(bookId, chapter.number, verse.number) ? 'text-red-500' : 'text-muted-foreground'}`}
+                      className={`${isFavorite(bookId, chapter.number, verse.verse) ? 'text-red-500' : 'text-muted-foreground'}`}
                       onClick={() => toggleFavorite({
                         bookId,
                         bookName: book.name,
                         chapterNumber: chapter.number,
-                        verseNumber: verse.number,
+                        verseNumber: verse.verse,
                         text: verse.text
                       })}
                     >
-                      <Heart className={`w-4 h-4 mr-1 ${isFavorite(bookId, chapter.number, verse.number) ? 'fill-current' : ''}`} />
-                      {isFavorite(bookId, chapter.number, verse.number) ? 'Favoritado' : 'Favoritar'}
+                      <Heart className={`w-4 h-4 mr-1 ${isFavorite(bookId, chapter.number, verse.verse) ? 'fill-current' : ''}`} />
+                      {isFavorite(bookId, chapter.number, verse.verse) ? 'Favoritado' : 'Favoritar'}
                     </Button>
                     <span className="text-xs text-muted-foreground">
-                      {book.name} {chapter.number}:{verse.number}
+                      {book.name} {chapter.number}:{verse.verse}
                     </span>
                   </div>
                 </div>
