@@ -164,7 +164,7 @@ export const Bible: React.FC = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-4 mb-4">
           <Link to="/terco">
             <Card className="p-3 bg-secondary text-white hover:opacity-90 divine-transition">
               <div className="text-center">
@@ -175,7 +175,7 @@ export const Bible: React.FC = () => {
           </Link>
           
           <Link to="/oracoes">
-            <Card className="p-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:opacity-90 divine-transition">
+            <Card className="p-3 bg-primary text-white hover:opacity-90 divine-transition">
               <div className="text-center">
                 <BookOpen size={20} className="mx-auto mb-2" />
                 <h3 className="font-medium text-sm">Orações</h3>
@@ -194,24 +194,26 @@ export const Bible: React.FC = () => {
         </div>
 
         {/* Favoritos */}
-        <Link to="/favoritos">
-          <Card className="p-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:opacity-90 divine-transition">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Star size={24} className="text-white" />
-                <div>
-                  <h3 className="font-semibold text-white">⭐ Favoritos</h3>
-                  <p className="text-sm text-white/90">
-                    {favorites.length} versículo{favorites.length !== 1 ? 's' : ''} favoritado{favorites.length !== 1 ? 's' : ''}
-                  </p>
+        <div className="mb-4">
+          <Link to="/favoritos">
+            <Card className="p-3 bg-primary text-white hover:opacity-90 divine-transition">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Star size={20} className="text-white" />
+                  <div>
+                    <h3 className="font-medium text-sm">⭐ Favoritos</h3>
+                    <p className="text-xs text-white/90">
+                      {favorites.length} versículo{favorites.length !== 1 ? 's' : ''} favoritado{favorites.length !== 1 ? 's' : ''}
+                    </p>
+                  </div>
                 </div>
+                <Button variant="secondary" size="sm" className="bg-white/20 text-white border-white/30 hover:bg-white/30">
+                  Ver todos
+                </Button>
               </div>
-              <Button variant="secondary" size="sm" className="bg-white/20 text-white border-white/30 hover:bg-white/30">
-                Ver todos
-              </Button>
-            </div>
-          </Card>
-        </Link>
+            </Card>
+          </Link>
+        </div>
 
         {/* Old Testament */}
         {(activeTestament === 'all' || activeTestament === 'old') && oldTestamentBooks.length > 0 && (
