@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Calendar, Clock, Star, MessageSquare } from 'lucide-react';
 import { BIBLE_CONTENT } from '@/data/bibleContent';
+import { useFavorites } from '@/hooks/useFavorites';
 
 // Create a map for easier access to books by ID
 const BIBLE_CONTENT_MAP = BIBLE_CONTENT.reduce((acc, book) => {
@@ -109,6 +110,7 @@ const BIBLE_BOOKS: Book[] = [
 export const Bible: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTestament, setActiveTestament] = useState<'all' | 'old' | 'new'>('all');
+  const { favorites } = useFavorites();
 
   const filteredBooks = BIBLE_BOOKS.filter(book => {
     const matchesSearch = book.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -192,20 +194,24 @@ export const Bible: React.FC = () => {
         </div>
 
         {/* Favoritos */}
-        <Card className="p-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Star size={24} className="text-white" />
-              <div>
-                <h3 className="font-semibold text-white">⭐ Favoritos</h3>
-                <p className="text-sm text-white/90">Seus versículos marcados</p>
+        <Link to="/favoritos">
+          <Card className="p-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white hover:opacity-90 divine-transition">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Star size={24} className="text-white" />
+                <div>
+                  <h3 className="font-semibold text-white">⭐ Favoritos</h3>
+                  <p className="text-sm text-white/90">
+                    {favorites.length} versículo{favorites.length !== 1 ? 's' : ''} favoritado{favorites.length !== 1 ? 's' : ''}
+                  </p>
+                </div>
               </div>
+              <Button variant="secondary" size="sm" className="bg-white/20 text-white border-white/30 hover:bg-white/30">
+                Ver todos
+              </Button>
             </div>
-            <Button variant="secondary" size="sm" className="bg-white/20 text-white border-white/30 hover:bg-white/30">
-              Ver todos
-            </Button>
-          </div>
-        </Card>
+          </Card>
+        </Link>
 
         {/* Old Testament */}
         {(activeTestament === 'all' || activeTestament === 'old') && oldTestamentBooks.length > 0 && (

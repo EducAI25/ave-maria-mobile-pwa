@@ -5,6 +5,7 @@ import { Header } from '@/components/Header';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BIBLE_CONTENT } from '@/data/bibleContent';
+import { useFavorites } from '@/hooks/useFavorites';
 
 // Create a map for easier access to books by ID
 const BIBLE_CONTENT_MAP = BIBLE_CONTENT.reduce((acc, book) => {
@@ -14,6 +15,7 @@ const BIBLE_CONTENT_MAP = BIBLE_CONTENT.reduce((acc, book) => {
 
 export const ChapterVerses: React.FC = () => {
   const { bookId, chapterNumber } = useParams<{ bookId: string; chapterNumber: string }>();
+  const { toggleFavorite, isFavorite } = useFavorites();
   
   if (!bookId || !chapterNumber || !BIBLE_CONTENT_MAP[bookId]) {
     return (
@@ -93,9 +95,20 @@ export const ChapterVerses: React.FC = () => {
                 <div className="flex-1">
                   <p className="verse-text leading-relaxed">{verse.text}</p>
                   <div className="flex items-center gap-2 mt-3">
-                    <Button variant="ghost" size="sm" className="text-muted-foreground">
-                      <Heart className="w-4 h-4 mr-1" />
-                      Favoritar
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className={`${isFavorite(bookId, chapter.number, verse.number) ? 'text-red-500' : 'text-muted-foreground'}`}
+                      onClick={() => toggleFavorite({
+                        bookId,
+                        bookName: book.name,
+                        chapterNumber: chapter.number,
+                        verseNumber: verse.number,
+                        text: verse.text
+                      })}
+                    >
+                      <Heart className={`w-4 h-4 mr-1 ${isFavorite(bookId, chapter.number, verse.number) ? 'fill-current' : ''}`} />
+                      {isFavorite(bookId, chapter.number, verse.number) ? 'Favoritado' : 'Favoritar'}
                     </Button>
                     <span className="text-xs text-muted-foreground">
                       {book.name} {chapter.number}:{verse.number}

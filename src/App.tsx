@@ -13,6 +13,7 @@ import { Oracoes } from "./pages/Oracoes";
 import { OracaoDetail } from "./pages/OracaoDetail";
 import { ComoLerBiblia } from "./pages/ComoLerBiblia";
 import { Anotacoes } from "./pages/Anotacoes";
+import { Favoritos } from "./pages/Favoritos";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/oracao/:oracaoId" element={<OracaoDetail />} />
             <Route path="/como-ler-biblia" element={<ComoLerBiblia />} />
             <Route path="/anotacoes" element={<Anotacoes />} />
+            <Route path="/favoritos" element={<Favoritos />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
