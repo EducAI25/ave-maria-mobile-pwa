@@ -26,12 +26,6 @@ export const Navigation: React.FC<NavigationProps> = ({ currentPath }) => {
       icon: GraduationCap,
       label: 'Como Ler',
       isActive: currentPath === '/como-ler-biblia'
-    },
-    {
-      href: '/anotacoes',
-      icon: MessageSquare,
-      label: 'Notas',
-      isActive: currentPath === '/anotacoes'
     }
   ];
 
