@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { MessageSquare, BookOpen, Calendar, Clock } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import type { Database } from '@/integrations/supabase/types';
 
 interface Note {
   id: string;
@@ -23,57 +25,91 @@ const CATEGORIES = {
 } as const;
 
 export const Anotacoes: React.FC = () => {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const [notes, setNotes] = useState<Database['public']['Tables']['notes']['Row'][]>([]);
   const [showForm, setShowForm] = useState(false);
-  const [editingNote, setEditingNote] = useState<Note | null>(null);
+  const [editingNote, setEditingNote] = useState<Database['public']['Tables']['notes']['Row'] | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    category: 'reflection' as keyof typeof CATEGORIES
+    category: 'reflection' as string
   });
-  const [filter, setFilter] = useState<keyof typeof CATEGORIES | 'all'>('all');
+  const [filter, setFilter] = useState<string | 'all'>('all');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Load notes from localStorage
+  // Buscar notas do Supabase ao carregar
   useEffect(() => {
-    const savedNotes = localStorage.getItem('bible-notes');
-    if (savedNotes) {
-      setNotes(JSON.parse(savedNotes));
-    }
+    const fetchNotes = async () => {
+      setLoading(true);
+      setError(null);
+      const { data, error } = await supabase
+        .from('notes')
+        .select('*')
+        .order('date', { ascending: false });
+      if (error) {
+        setError('Erro ao carregar anotações.');
+      } else if (data) {
+        setNotes(data);
+        localStorage.setItem('bible-notes', JSON.stringify(data));
+      }
+      setLoading(false);
+    };
+    fetchNotes();
   }, []);
 
-  // Save notes to localStorage
+  // Salvar notas no localStorage sempre que mudar
   useEffect(() => {
     localStorage.setItem('bible-notes', JSON.stringify(notes));
   }, [notes]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!formData.title.trim() || !formData.content.trim()) return;
-
+    setLoading(true);
+    setError(null);
     if (editingNote) {
-      // Update existing note
-      setNotes(notes.map(note => 
-        note.id === editingNote.id 
-          ? { ...editingNote, ...formData, date: new Date().toISOString() }
-          : note
-      ));
-      setEditingNote(null);
+      // Atualizar nota existente
+      const { data, error } = await supabase
+        .from('notes')
+        .update({
+          title: formData.title,
+          content: formData.content,
+          category: formData.category,
+          date: new Date().toISOString(),
+        })
+        .eq('id', editingNote.id)
+        .select();
+      if (error) {
+        setError('Erro ao atualizar anotação.');
+      } else if (data && data[0]) {
+        setNotes(notes.map(note => note.id === editingNote.id ? data[0] : note));
+        setEditingNote(null);
+        setShowForm(false);
+        setFormData({ title: '', content: '', category: 'reflection' });
+      }
     } else {
-      // Create new note
-      const newNote: Note = {
-        id: Date.now().toString(),
-        ...formData,
-        date: new Date().toISOString()
-      };
-      setNotes([newNote, ...notes]);
+      // Criar nova nota
+      const { data, error } = await supabase
+        .from('notes')
+        .insert({
+          title: formData.title,
+          content: formData.content,
+          category: formData.category,
+          date: new Date().toISOString(),
+        })
+        .select();
+      if (error) {
+        setError('Erro ao criar anotação.');
+      } else if (data && data[0]) {
+        setNotes([data[0], ...notes]);
+        setShowForm(false);
+        setFormData({ title: '', content: '', category: 'reflection' });
+      }
     }
-
-    setFormData({ title: '', content: '', category: 'reflection' });
-    setShowForm(false);
+    setLoading(false);
   };
 
-  const handleEdit = (note: Note) => {
+  const handleEdit = (note: Database['public']['Tables']['notes']['Row']) => {
     setEditingNote(note);
     setFormData({
       title: note.title,
@@ -83,14 +119,25 @@ export const Anotacoes: React.FC = () => {
     setShowForm(true);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Tem certeza que deseja excluir esta anotação?')) {
-      setNotes(notes.filter(note => note.id !== id));
+      setLoading(true);
+      setError(null);
+      const { error } = await supabase
+        .from('notes')
+        .delete()
+        .eq('id', id);
+      if (error) {
+        setError('Erro ao excluir anotação.');
+      } else {
+        setNotes(notes.filter(note => note.id !== id));
+      }
+      setLoading(false);
     }
   };
 
-  const filteredNotes = filter === 'all' 
-    ? notes 
+  const filteredNotes = filter === 'all'
+    ? notes
     : notes.filter(note => note.category === filter);
 
   const formatDate = (dateString: string) => {
@@ -109,6 +156,12 @@ export const Anotacoes: React.FC = () => {
       <Header title="Anotações" subtitle="Reflexões e lembretes" />
       
       <div className="p-4 space-y-4">
+        {loading && (
+          <Card className="p-4 text-center text-blue-600">Carregando...</Card>
+        )}
+        {error && (
+          <Card className="p-4 text-center text-red-600">{error}</Card>
+        )}
         {/* Add Note Button */}
         {!showForm && (
           <Button 
@@ -157,7 +210,7 @@ export const Anotacoes: React.FC = () => {
                       type="button"
                       variant={formData.category === key ? 'default' : 'outline'}
                       className="h-auto p-2 flex-col gap-1"
-                      onClick={() => setFormData({ ...formData, category: key as keyof typeof CATEGORIES })}
+                      onClick={() => setFormData({ ...formData, category: key as string })}
                     >
                       <Icon size={16} />
                       <span className="text-xs">{category.name}</span>
@@ -195,7 +248,7 @@ export const Anotacoes: React.FC = () => {
               key={key}
               variant={filter === key ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setFilter(key as keyof typeof CATEGORIES)}
+              onClick={() => setFilter(key as string)}
             >
               {category.name}
             </Button>
@@ -210,13 +263,13 @@ export const Anotacoes: React.FC = () => {
               <p className="text-muted-foreground">
                 {filter === 'all' 
                   ? 'Nenhuma anotação criada ainda' 
-                  : `Nenhuma anotação na categoria "${CATEGORIES[filter as keyof typeof CATEGORIES].name}"`
+                  : `Nenhuma anotação na categoria "${CATEGORIES[filter as string].name}"`
                 }
               </p>
             </Card>
           ) : (
             filteredNotes.map((note) => {
-              const category = CATEGORIES[note.category];
+              const category = CATEGORIES[note.category as keyof typeof CATEGORIES];
               const Icon = category.icon;
               
               return (

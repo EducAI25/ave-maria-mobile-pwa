@@ -71,3 +71,21 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+## Banco de Dados: Supabase
+
+Crie a tabela `notes` no Supabase com o seguinte SQL:
+
+```sql
+create table public.notes (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid null,
+  title text not null,
+  content text not null,
+  category text not null,
+  date timestamptz not null default now(),
+  created_at timestamptz not null default now()
+);
+```
+
+Se desejar associar notas a usuários, utilize o campo `user_id` e configure autenticação.
