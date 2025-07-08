@@ -13,6 +13,9 @@ export const Favoritos: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header title="Favoritos" subtitle="Seus versículos marcados" />
+      <Card className="p-3 mb-4 bg-yellow-100 text-yellow-800 border-yellow-300">
+        <p>⚠️ Seus favoritos ficam salvos apenas temporariamente neste dispositivo. Se você limpar o histórico, trocar de navegador ou usar outro aparelho, eles podem ser perdidos.</p>
+      </Card>
       
       <div className="p-4 space-y-4">
         <div className="flex gap-2">

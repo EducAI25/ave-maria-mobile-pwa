@@ -22,6 +22,12 @@ export const Navigation: React.FC<NavigationProps> = ({ currentPath }) => {
       isActive: currentPath === '/oracoes' || currentPath.startsWith('/oracao/')
     },
     {
+      href: '/favoritos',
+      icon: Heart,
+      label: 'Favoritos',
+      isActive: currentPath === '/favoritos'
+    },
+    {
       href: '/como-ler-biblia',
       icon: GraduationCap,
       label: 'Como Ler',
