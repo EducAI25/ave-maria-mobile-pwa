@@ -173,21 +173,19 @@ export const Bible: React.FC = () => {
               </div>
             </Card>
           </Link>
-          
-          <Link to="/oracoes">
+          <Link to="/favoritos">
             <Card className="p-3 bg-primary text-white hover:opacity-90 divine-transition">
               <div className="text-center">
-                <BookOpen size={20} className="mx-auto mb-2" />
-                <h3 className="font-medium text-sm">Orações</h3>
+                <Star size={20} className="mx-auto mb-2" />
+                <h3 className="font-medium text-sm">Favoritos</h3>
               </div>
             </Card>
           </Link>
-          
-          <Link to="/anotacoes">
+          <Link to="/oracoes">
             <Card className="p-3 bg-secondary text-white hover:opacity-90 divine-transition">
               <div className="text-center">
-                <MessageSquare size={20} className="mx-auto mb-2" />
-                <h3 className="font-medium text-sm">Notas</h3>
+                <BookOpen size={20} className="mx-auto mb-2" />
+                <h3 className="font-medium text-sm">Orações</h3>
               </div>
             </Card>
           </Link>
